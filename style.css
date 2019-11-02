@@ -1,0 +1,19 @@
+/* body {
+    font-family: 'Roboto', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif
+} */
+
+#app {
+    width: 90%;
+    margin: auto;
+    font-size: 1.1em;
+}
+
+#app table {
+    margin: auto;
+    font-size: 1em;
+}
+
+#app input {
+    width: 60px;
+    height: 40px;
+}

@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Cálculo Numérico</title>
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui"
+    />
+    <link rel="stylesheet" href="./style.css" />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+      crossorigin="anonymous"
+    />
+  </head>
+  <body>
+    <div id="app">
+      <div class="container-fluid">
+        <div class="row">
+          <h1 class="display-4" style="font-size: 2.3em; margin-top: 20px">
+            Forma de Lagrange
+          </h1>
+        </div>
+        <br />
+
+        <div class="card" style="padding: 15px">
+          <div class="row">
+            <div class="col-md-3">
+              <h4>Ordem do sistema</h4>
+              <input
+                v-model="ordem"
+                style="width: 70px;"
+                type="number"
+                max="10"
+                min="3"
+                @blur="resetMatriz()"
+              />
+            </div>
+          </div>
+          <br />
+
+          <div class="row">
+            <div class="col-md-12">
+              <h4>Matriz</h4>
+              <table style="margin: 0%">
+                <tr v-for="linha in matriz">
+                  <td
+                    v-for="(coluna, index) in linha.items"
+                    style="width: 80px; height: 50px;"
+                  >
+                    <div v-if="index == linha.items.length - 1">
+                      <input v-model="coluna.value" style="margin-left: 35px" />
+                    </div>
+                    <div v-else style="width: 50px;">
+                      <input v-model="coluna.value" />
+                    </div>
+                  </td>
+                </tr>
+              </table>
+            </div>
+            <div class="col-md-12">
+              <div style="text-align: end">
+                <button @click="calcular" class="btn btn-primary">
+                  Calcular
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div
+          class="card"
+          style="padding: 15px; margin-top: 40px; margin-bottom: 20px"
+          v-if="resultado && resultado.etapas && resultado.etapas.length"
+        >
+          <div class="row" >
+            <div class="col-md-12">
+              <h4>Etapas</h4>
+              <table
+                style="margin: 0px 0px 30px 0px"
+                v-for="etapa in resultado.etapas"
+              >
+                <tr v-for="linha in etapa">
+                  <td
+                    v-for="(coluna, index) in linha"
+                    style="width: 80px; height: 50px;"
+                  >
+                    <div v-if="index == linha.length - 1">
+                      <input
+                        :value="coluna"
+                        style="margin-left: 35px"
+                        disabled
+                      />
+                    </div>
+                    <div v-else style="width: 50px;">
+                      <input :value="coluna" disabled />
+                    </div>
+                  </td>
+                </tr>
+              </table>
+            </div>
+            <div class="col-md-12">
+              <h4>Resultado</h4>
+              <div
+                v-for="valor in resultado.valorX"
+                style="display: inline-block; width: 80px;"
+              >
+                <input :value="Number(valor) && isFinite(Number(valor)) ? Number(valor) : ''" disabled />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.x/dist/vue.js"></script>
+    <script src="main.js"></script>
+    <script>
+      const app = new Vue({
+        el: '#app',
+        data: {
+          matriz: [],
+          ordem: 3,
+          resultado: null,
+        },
+        created() {
+          this.matriz = this.buildMatriz(this.ordem);
+        },
+        methods: {
+          buildMatriz(n = 3) {
+            n = Number(n);
+
+            if (n > 10 || n < 2) {
+              return [];
+            }
+
+            return new Array(n).fill(0).map(() => {
+              const items = new Array(n + 1).fill(0).map(() => {
+                return { value: '' };
+              });
+              return { items };
+            });
+            1;
+          },
+
+          resetMatriz() {
+            this.matriz = this.buildMatriz(this.ordem);
+            this.resultado = null;
+          },
+
+          calcular() {
+            const matriz = [[]];
+
+            for (let i = 0; i < this.matriz.length; i++) {
+              matriz[i] = [];
+
+              for (let j = 0; j < this.matriz.length + 1; j++) {
+                matriz[i][j] = Number(this.matriz[i].items[j].value) || 0;
+              }
+            }
+
+            this.resultado = calcularGauss(matriz, 0, 0);
+          }
+        }
+      });
+    </script>
+  </body>
+</html>
