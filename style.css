@@ -1,19 +1,66 @@
-/* body {
-    font-family: 'Roboto', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif
-} */
+/* @import "compass/css3"; */
 
-#app {
-    width: 90%;
-    margin: auto;
-    font-size: 1.1em;
-}
-
-#app table {
-    margin: auto;
-    font-size: 1em;
-}
-
-#app input {
-    width: 60px;
-    height: 40px;
-}
+.invalid {
+    background: red;
+  }
+  
+  .table-editable {
+    position: relative;
+  
+    .glyphicon {
+      font-size: 20px;
+    }
+  }
+  
+  .table-remove {
+    color: #700;
+    cursor: pointer;
+  
+    &:hover {
+      color: #f00;
+    }
+  }
+  
+  .table-up,
+  .table-down {
+    color: #007;
+    cursor: pointer;
+  
+    &:hover {
+      color: #00f;
+    }
+  }
+  
+  .table-add {
+    color: #070;
+    cursor: pointer;
+    position: absolute;
+    top: 8px;
+    right: 0;
+  
+    &:hover {
+      color: #0b0;
+    }
+  }
+  
+  #app {
+      width: 90%;
+      margin: auto;
+      font-size: 1.1em;
+    }
+    
+    #app table {
+      margin: left;
+      font-size: 1em;
+      width: 200px;
+    }
+    
+    #app table td {
+      width: 50px;
+      /* margin-left: 20px; */
+    }
+    
+    #app input {
+      width: 60px;
+      height: 40px;
+    }
