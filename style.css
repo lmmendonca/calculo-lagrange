@@ -31,18 +31,6 @@
     }
   }
   
-  .table-add {
-    color: #070;
-    cursor: pointer;
-    position: absolute;
-    top: 8px;
-    right: 0;
-  
-    &:hover {
-      color: #0b0;
-    }
-  }
-  
   #app {
       width: 90%;
       margin: auto;

@@ -1,37 +1,26 @@
 
-var Lagrange = function (x1, y1, x2, y2) {
+var Interpolacao = function (x1, y1, x2, y2) {
 	this.xs = [x1, x2];
 	this.ys = [y1, y2];
 }
 
-function gdc(a, b) {
-	if (b == 0)
-		return a
-	else
-		return gdc(b, a % b)
-}
-
-function ldc(a, b) {
-	Math.abs(a * b) / gdc(a, b);
-}
-
-Lagrange.prototype.adicionarPonto = function (x, y) {
+Interpolacao.prototype.adicionarPonto = function (x, y) {
 	this.xs.push(x);
 	this.ys.push(y);
 	return this.quantidadePontos() - 1;
 }
 
-Lagrange.prototype.removerPonto = function (index) {
+Interpolacao.prototype.removerPonto = function (index) {
 	this.xs.remove(index);
 	this.ys.remove(index);
 	return this.quantidadePontos();
 };
 
-Lagrange.prototype.quantidadePontos = function () {
+Interpolacao.prototype.quantidadePontos = function () {
 	return this.xs.length;
 };
 
-Lagrange.prototype.plotValoresX = function () {
+Interpolacao.prototype.plotValoresX = function () {
 	min = this.xs[0];
 	max = this.xs[0];
 	step = this.xs[0];
@@ -57,7 +46,7 @@ Lagrange.prototype.plotValoresX = function () {
 	return math.range(min, max, step).toArray();
 }
 
-Lagrange.prototype.gerarExpressao = function (index) {
+Interpolacao.prototype.gerarExpressao = function (index) {
 	var numerator = "", denominator = "";
 
 	for (var j = 0; j < this.quantidadePontos(); j++) {
@@ -69,7 +58,7 @@ Lagrange.prototype.gerarExpressao = function (index) {
 	return `(${numerator.substr(0, numerator.length - 1)})/ (${denominator.substr(0, denominator.length - 1)})`;
 };
 
-Lagrange.prototype.generatePexpression = function () {
+Interpolacao.prototype.generatePexpression = function () {
 	var expression = "";
 	for (var i = 0; i < this.quantidadePontos(); i++) {
 		expression += `(${this.gerarExpressao(i)} * ${(this.ys[i])}) +`;
@@ -77,13 +66,13 @@ Lagrange.prototype.generatePexpression = function () {
 	return expression.substr(0, expression.length - 1);
 };
 
-Lagrange.prototype.evaluateExpression = function (x) {
+Interpolacao.prototype.evaluateExpression = function (x) {
 	var compiled = math.compile(this.generatePexpression());
 	var scope = { x: x };
 	return compiled.eval(scope);
 }
 
-Lagrange.prototype.generateTexLexpression = function (index) {
+Interpolacao.prototype.generateTexLexpression = function (index) {
 	var numerator = `L_${index}(x) = `, denominator = "";
 	for (var j = 0; j < this.quantidadePontos(); j++) {
 		if (index != j) {
@@ -95,7 +84,7 @@ Lagrange.prototype.generateTexLexpression = function (index) {
 	return `${numerator.substr(0, numerator.length - 1)}/ ${denominator.substr(0, denominator.length - 1)}`;
 }
 
-Lagrange.prototype.generateTexPexpression = function () {
+Interpolacao.prototype.generateTexPexpression = function () {
 	var expression = "P(x) = ";
 
 	for (var i = 0; i < this.quantidadePontos(); i++) {
@@ -221,7 +210,7 @@ $CALC.click(function () {
 
 	});
 
-	lagrange = new Lagrange(xs[0], ys[0], xs[1], ys[1]);
+	lagrange = new Interpolacao(xs[0], ys[0], xs[1], ys[1]);
 	for (var i = 2; i < xs.length; i++) {
 		lagrange.adicionarPonto(xs[i], ys[i]);
 	}
@@ -241,3 +230,14 @@ $INTERPOLATE.click(function () {
 		return { 'x': x, 'y': lagrange.evaluateExpression(x) }
 	});
 })
+
+function gdc(a, b) {
+	if (b == 0)
+		return a
+	else
+		return gdc(b, a % b)
+}
+
+function ldc(a, b) {
+	Math.abs(a * b) / gdc(a, b);
+}
